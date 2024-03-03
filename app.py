@@ -30,6 +30,7 @@ def gerencia_processos():
         #Ordena os processos por tempo de chegada
         dados_dict.sort(key=lambda x: x['tempoChegada'])
         
+        #Isso ainda não funciona
         tempo_execucao = 0
         tempo_espera = 0
         tempo_total = 0

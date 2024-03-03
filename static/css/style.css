@@ -1,0 +1,9 @@
+.fieldset-personalizado {
+    padding: 10px;
+    border: solid 3px rgb(248, 249, 250);
+    border-radius: 12px;
+}
+
+.fieldset-personalizado legend {
+    padding: 2px 4px;
+}

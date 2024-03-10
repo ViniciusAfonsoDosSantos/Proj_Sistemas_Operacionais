@@ -1,6 +1,5 @@
 let numeroProcessos = 0;
 
-//
 document.addEventListener('DOMContentLoaded', function () {
   const tempoChegadaInput = document.getElementById('tempoChegadaInput');
   const tempoServicoInput = document.getElementById('tempoServicoInput');
@@ -11,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const gerenciadorProcessos = document.getElementById('processButton');
   const divOpcoesProcesso = document.getElementById('div_opcoes_gerenciador_processos');
   const tipoProcessoSelecionado = document.getElementById('algorithmSelect');
-  const opcaoSelecionada = tipoProcessoSelecionado.options[tipoProcessoSelecionado.selectedIndex].value;
 
   adicionarProcessoButton.addEventListener('click', function () {
 
@@ -41,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
     divProcessos.hidden = false;
 
     //Ao atingir 5 processos, o botão de gerenciamento de processos e o select de tipo de processo é habilitado
-    if(numeroProcessos >= 5){
+    if (numeroProcessos >= 5) {
       divOpcoesProcesso.hidden = false;
     }
 
@@ -51,6 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
   gerenciadorProcessos.addEventListener('click', function () {
     let tabelaProcessos = document.getElementById('processTableRows');
     let dadosProcessos = [];
+    let opcaoSelecionada = tipoProcessoSelecionado.options[tipoProcessoSelecionado.selectedIndex].value;
 
     for (let i = 0; i < tabelaProcessos.rows.length; i++) {
       let processo = {
@@ -71,14 +70,76 @@ document.addEventListener('DOMContentLoaded', function () {
         opcaoSelecionada: opcaoSelecionada
       },
       success: function (data) {
-        let divResultado = document.querySelector('#resultado');
-        divResultado.innerHTML = data;
-  
+        //Recebe o resultado e entra na função
+        adicionaExpressao(data.temposServico, data.temposEspera, data.tempoExecucaoFinal, data.tempoEsperaFinal, data.grafico)
       }
     });
-    
+
   });
 });
+
+//A função recebe os parametros e monta um html na tela como uma expressão matemática
+function adicionaExpressao(temposServico, temposEspera, tempoExecucaoFinal, tempoEsperaFinal, grafico) {
+  const htmlContent = document.getElementById('resultado');
+  let numeradorServico = '';
+  let numeradorEspera = '';
+
+  //Molda a expressão de acordo com o tamanho dela.
+  for (let i = 0; i < temposServico.length; i++) {
+
+    if (i === temposServico.length - 1) {
+      numeradorServico += `${temposServico[i]}`;
+      numeradorEspera += `${temposEspera[i]}`;
+      break;
+    }
+
+    numeradorServico += `${temposServico[i]} + `;
+    numeradorEspera += `${temposEspera[i]} + `;
+  }
+
+  //Monta o html
+  const html = `
+        <div class="row">
+          <div class="col-3">
+            <div class="row">
+              <div class="col-9">
+                <div class="numerador d-flex justify-content-center">
+                  ${numeradorServico}
+                </div>
+                <hr/>
+                <div class="denominador d-flex justify-content-center">
+                  ${temposServico.length}
+                </div>
+              </div>
+              <div class="col-3">
+                =  ${tempoExecucaoFinal}
+              </div>
+            </div>
+            <br>
+            <br>
+            <div class="row">
+              <div class="col-9">
+                <div class="numerador d-flex justify-content-center">
+                  ${numeradorEspera}
+                </div>
+                <hr/>
+                <div class="denominador d-flex justify-content-center">
+                  ${temposEspera.length}
+                </div>
+              </div>
+              <div class="col-3">
+                =  ${tempoEsperaFinal}
+              </div>
+            </div>
+          </div>
+          <div class="col-9">
+            ${grafico}
+          </div>
+        </div>
+        `;
+
+  htmlContent.innerHTML = html;
+}
 
 
 

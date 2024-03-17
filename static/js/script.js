@@ -100,6 +100,7 @@ function adicionaExpressao(temposServico, temposEspera, tempoExecucaoFinal, temp
   //Monta o html
   const html = `
         <div class="row">
+        <p>Os valores não estam na ordem certa</p>
           <div class="col-3">
             <div class="row">
               <div class="col-9">
